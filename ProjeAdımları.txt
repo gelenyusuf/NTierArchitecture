@@ -1,0 +1,36 @@
+1=> Öncelikle katmanlarýmzýý açýyoruz.(Project.ENTITIES,Project.MAP,Project.DAL,Project.BLL)katmanlarýný class library (.Net Framework) olarak açýyoruz.
+(Solutionlarýmýza sað týklayýp Add new Project diyerek ) UI katmanýný hangi displayde istersek  o platformda açmalýyýz.Burada kullandýðýmýz display
+Windoes form application olarak seçilmiþtir.
+
+Class library olan projelerimiz çalýþabailecek projeler deðildir.Bu projeler ilgili yapý canlýya çýktýðý zaman DLL'e dönüþüp çalýþabilir durumda olan 
+projenin içerisinde eklenen dosyalardýr.Çalýþabilecek tek yapý UI katmanýdýr.Bu yüzden hemen UI katmanýmýz olan projeyi hemen set a start up olarak 
+ayarlamalýyýz
+
+NTier
+
+ENTITIES KATMANI : Veri tabanýnda tabloya dönüþecek olan sýnýflarýmýzý , enumlarýmýzý varsa Interfacelerimizi içerecek olan katmandýr.
+ 
+MAP KATMANI : Veritabaný ayarlamalarýnýzý hazýr bulundurup DAL'e gönderecek katmandýr.
+
+DAL KATMANI : Veritabaný ile haberleþecek veritabanýnýn oluþmasýný saðlayacak katmandýr.
+
+BLL KATMANI : Ýþ akýþýnýzý belirleyecek katmandýr.
+
+UI : Kullanýcýnýn etkileþime geçeceði projeyi oluþturan katmandýr.
+
+
+Sýra : 
+1=> Önce ENTITIES katmaný  ile baþlýyoruz.Entýtýes katmanýnda veritabanýzda tablo olacak sýnýflarýn tasarlanmasý lazým.
+
+2=>Map katmanýna geçiyoruz.Map katmanýnda veritabaný ayarlamalarý yapacaðýmýz için Entity Framework 'ün bu katmana indirilmesi lazým.
+Bütün ayarlama iþlemleri Entity Frameworkten gelir.Ayný zamanda bu katman ENTITIES katmanýndaki classlarý kullanmak istediði için 
+Entýtýes katmanýndan referans alýr.
+
+3=>DAL katmanýnda Entity Framework indirildi.Entýtýes ve MAP katmanlarýndan referans aldýk.Tam bu sýrada set a start up olarak ayarlanmýþ UI katmanýna
+önce Entity Framework indirelim.Ve oranýn WINUI ýn app.config ine adresimizi yazalým.Bu projeler içerisinde set a start up olarak ayarlanmýþ olan projemizin 
+config dosyasý görüleceðinden dolayý DAL katmanýnda Context sýnýfýmýzýn constructor'ýndan ulaþacaðýmýz DBContext sýnýfýnýn   constructorýna rahatça config 
+dosyasý ismini verebildik.(Burada dikkat ederseniz kullanacaðýnýz config dosyasýnýn set a startup olarak ayarlanmýþ katmanda bulunmasý.
+Bu bizim için UI katmanýdýr.)
+
+4=>BLL katmanýna geçiyoruz.Entity Framework indiriyoruz.DAL ve ENTITIES katmanýndan referans alýyoruz.Sonra SingletonPatternimizi yaratýyoruz.Sonra Generic 
+Repostitory e geçiyoruz.

@@ -1,0 +1,72 @@
+
+          ---Architecture Pattern (Mimari Patternler)---
+          Architecure patternler, bir projenin sistematik iþleyiþinden (çalýþmasýný / kurulmasýný saðlayan temel mekanizmasýndan ) sorumludur.
+          Projenin tüm çalýþma antýðý ve sistemsel iþleyiþi ile ilgilenen bir þablondur.Bozulduklarý zaman proje çöker.
+
+          Design patternler ise kesinlikle projenin sistematik iþleyiþi ile ilgilenmez.(Proje nasýl çalýþacak nerelere hangi assemblyler alýnacak vs...)
+          Proje içerinden ýkalrýklarý zaman proje çökmez.Ama performansýný ciddi ölçüde  kaybeder. Projenin kurulumuna bi katkýsý yoktur.Sadece mimari 
+          pattern ile uyum saðladýðý sürece ciddi þekilde performansýný arttýrýr.
+
+          --Yönetilebilirlik,ekip çalýþmasý ve performans açýsýndan bütün sorumluluklarý tek tek projelere ayýrdýðýnýz mimarilere Layered
+          Architecture Patterns denir.Bunlardan N-Tier Architecture,Onion Architecture , Hybrid N-Tier Architecture , Hexagonal Architecture
+          en bilinenleridir.N-Tier Architecture pattern bütün katmanlarýn (projelerin) baðýmsýz olmasýný prensibini uygulayarak ciddi ölçüde 
+          esneklik saðlar.Tek bir projede hem veritabaný hem tasarým hem veritabanýndaki tablolarý temsiil edecek classlarýn tutulmasý bir hata
+          durumunda esnekliði kýsýtlayan bir yöntemdir. Ancak bütün görevler kendi sorumluluklarýný uygulayan ayrý projelere verildiði zaman
+          daha fazla esneklik kazanýp ayný zamanda hataya daha hýzlý müdahale edilebilir bir hale geleceksinizdir.Ayný zamanda ekip üyeleri ayný
+          anda çalýþabilirler.Ve  performans açýsýndan da sistemin daha hýzlý çalýþmasýný saðlayacaktýr.
+
+          Mimari patternler ikiye ayrýlýr.
+          Layered Architecture Patterns
+          Modular Architectrue Patterns(MVC , MVVM , MVM)
+
+
+          Katmanlý Mimari kullanmak için aklýmýzdaki projeyi görev yapacak ayrý ayrý parçalara ayýrmalýyýz.Projemizin bütün halini bölerek yönetmeye
+          çalýþtýðýnýz ve her projeye kendi görevlerini yazdýðýnýz bir katmanlý mimari modeli uygulamai þlemin geçtiðiniz N-Tier mimari patterni ortaya
+          çýkmaktadýr.
+
+          Katmanlý bir mimari profosyonel bir gelenekssel yapýda minumum 5 katmandan olursa en saðlýklý patterni sunar.Ýstendiði taktiirde baðýmsýz olan 
+          bir katmanlý mimari (Code First veya benzeri yapýlarda kullanýlan bir katmanlý mimari )ihtiyaca göre ek katmanlar alarak kendisini geniþletebilir.
+          Lakin bu ek katmanlarýn çok dikkatli açýlmasý gerekir.Normalde tek bir çatý altýnda durmasý gereken yapýlarý ayýrmamalýyýz.Katmanlý mimari özgürlüðü
+          kýsýtlayan hazýr yapýlarda (ancak son çare olarak DBFirst burada kullanýlýr) bile 3 katmanlý kullanýlmamasý gerekir.3 katmanlý durumu kesinllikle 
+          tavsiye edilmez.
+
+          3katmanlý N-tier architecute  pattern'in katmanlarý (tavsiye edilmez):
+          DAL (Data Access Layer)
+          BLL (business Logic Layer)
+          UI  (User Interface) PL (Presentation Layer)
+
+          Katmanlý terimi proje demektir.N-Tier çok katmanlý bir Solution'da birden fazla proje demektir.
+          
+          1=> DAL (Data Access Layer) Veri eriþim katmaný : Solutionun sadece veritabaný baðlantýsý ile ilgilenecek olan katmandýr.
+          DBFirstte sadece veritabaný yansýmasý  almayý saðlarken  bizi kýsýtlayarak içerisine tablolarý temsil eden sýnýflarýmýzý alýr.
+          (Halbuki saðlýklý bir N-tier mimarisinde bu sýnýflarýn da ayrý bir projede (katmanda) bulunmasý gerekir.)Yani CodeFirst yönteminde bu katmanýn
+          sorumuluðu böyle verilmemelidir.Yaratacaðýmýz Context sýnýfýnýn DAL 'da ayrý bir þekilde diðer sýnýflarýnda  ENTITIES isimli baþka bir katmanda
+          ayrý bir þekilde tutulmasý gerekir.Context sýnýfýmýzýn içerisinde yapýlan ayarlamalar DBFirst'te bu katman tarafýndan belirlense de ayarlama 
+          ayný katman içerisinde ayrý bir klasörde tutularak ilgili Context sýnýfýnda kullanýlmasý en saðlýklý olur.CodeFirst yapýsý bu ayarlama iþlemleride
+          MAP adlý ayrý bir katmanda  yapýlmalýdýr.
+
+          2=>BLL(Business Login Layer) : Ýþ mantýðý katmaný : Eðer bir frameworkün bize sunduðu yapýlarý özelleþtirmek istersek veya ek olarak kendi 
+          metotlarýmýzý açmak istersek ve bu metotlar tüm  her yerde kullanýlacak metotlar olacaksa/ortak bir sýnýf yaratmak istersek bunu yönetmek 
+          istersek bu katmanda toplarýz.Ayný zamanda BLL katmaný N-Tier mimari paterninde tasarým patternlerinizin (design patterns) büyük
+          bir çoðunluðunun barýndýrýlacaðý yerdir.
+          
+          3-Presentation (UI-User Interface) Layer : Sunum katmaný : Tasrým arayüzümüzdür.Kullanýcý bunu görür bunu kullanýr.Burasý sayesinde program 
+          çalýþýr ve kullanýlabilir.
+
+
+          Katmanlý mimarilerde önemli kurallar vardýr:
+
+          1-Bir mimaride birden fazla Presentation mimari bulunabilir.(Form, Web, Mobile , API)Ancak MAP,BLL,DLL
+          Entities katmanlarý bir tane olabilirler.
+          
+          2-Eðer bir katman (proje) baþka bir katmaný referans alýyorsa oraya refereans veremez.Circular dependency yaratmýþ olursunuz.
+          Ortak yapýlar için illa belirli sýnýflar kullanýlacak ise bir baþka ara katman açýlýr.
+
+          .Net Framework üzerinde yaratýlan mimariler için geçerlidir:
+          3- Eðer bir katmandan referans almýþsanýz, bu durum o katmanýn aldýðý kendi referanslarýný da alacaðýnýz anlamýna gelmez.Onlarý ayrý bir þekilde 
+          referans almalýyýz.
+
+          MAP ==>bizim veritabaný ayarlamlarýný yapacaðýmýz katmandýr.
+          ENTITIES =>veritabanýmýzda tablolarýmýzý temsil edecek classlarýmýzýn bulunduðu katmandýr.
+
+          N-Tier mimari de kuraldýr,UI asla DAL dan referans almaz.
